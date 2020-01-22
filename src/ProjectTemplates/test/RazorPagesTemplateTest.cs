@@ -209,6 +209,41 @@ namespace Templates.Test
             }
         }
 
+        [Fact]
+        public async Task RazorPagesTemplate_RazorRuntimeCompilation_BuildsAndPublishes()
+        {
+            Project = await ProjectFactory.GetOrCreateProject("razorpages_rc", Output);
+
+            var createResult = await Project.RunDotNetNewAsync("razor", args: new[] { "--use-runtime-compilation" });
+            Assert.True(0 == createResult.ExitCode, ErrorMessages.GetFailedProcessMessage("create/restore", Project, createResult));
+
+            // Verify building in debug works
+            var buildResult = await Project.RunDotNetBuildAsync();
+            Assert.True(0 == buildResult.ExitCode, ErrorMessages.GetFailedProcessMessage("build", Project, buildResult));
+
+            // Publish builds in "release" configuration. Running publish should ensure we can compile in release and that we can publish without issues.
+            buildResult = await Project.RunDotNetPublishAsync();
+            Assert.True(0 == buildResult.ExitCode, ErrorMessages.GetFailedProcessMessage("publish", Project, buildResult));
+
+            Assert.False(Directory.Exists(Path.Combine(Project.TemplatePublishDir, "refs")), "The refs directory should not be published.");
+       }
+
+        [Fact]
+        public async Task MvcTemplate_RazorRuntimeCompilationWithOrgAuth_BuildsAndPublishes()
+        {
+            Project = await ProjectFactory.GetOrCreateProject("razorpages_rc_org", Output);
+
+            var createResult = await Project.RunDotNetNewAsync("razor", auth: "SingleOrg", args: new[] { "--use-runtime-compilation" });
+            Assert.True(0 == createResult.ExitCode, ErrorMessages.GetFailedProcessMessage("create/restore", Project, createResult));
+
+            // Verify building in debug works
+            var buildResult = await Project.RunDotNetBuildAsync();
+            Assert.True(0 == buildResult.ExitCode, ErrorMessages.GetFailedProcessMessage("build", Project, buildResult));
+
+            // Publish builds in "release" configuration. Running publish should ensure we can compile in release and that we can publish without issues.
+            buildResult = await Project.RunDotNetPublishAsync();
+            Assert.True(0 == buildResult.ExitCode, ErrorMessages.GetFailedProcessMessage("publish", Project, buildResult));
+       }
 
         private string ReadFile(string basePath, string path)
         {

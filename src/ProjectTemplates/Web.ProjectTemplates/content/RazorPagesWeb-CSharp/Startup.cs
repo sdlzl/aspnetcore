@@ -119,6 +119,16 @@ namespace Company.WebApplication1
 #else
             services.AddRazorPages();
 #endif
+#if (RazorRuntimeCompilation)
+
+//-:cnd:noEmit
+#if DEBUG
+            // Configure runtime compilation in Debug builds
+            services.AddRazorPages()
+                .AddRazorRuntimeCompilation();
+#endif
+//+:cnd:noEmit
+#endif
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

@@ -119,8 +119,15 @@ namespace Company.WebApplication1
 #else
             services.AddControllersWithViews();
 #endif
-#if (OrganizationalAuth || IndividualAuth)
-           services.AddRazorPages();
+#if (RazorRuntimeCompilation)
+
+//-:cnd:noEmit
+#if DEBUG
+            // Configure runtime compilation in Debug builds
+            services.AddControllersWithViews()
+                .AddRazorRuntimeCompilation();
+#endif
+//+:cnd:noEmit
 #endif
         }
 
