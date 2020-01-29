@@ -218,7 +218,7 @@ namespace Templates.Test
         {
             Project = await ProjectFactory.GetOrCreateProject("mvc_rc", Output);
 
-            var createResult = await Project.RunDotNetNewAsync("mvc", args: new[] { "--use-runtime-compilation" });
+            var createResult = await Project.RunDotNetNewAsync("mvc", args: new[] { "--razor-runtime-compilation" });
             Assert.True(0 == createResult.ExitCode, ErrorMessages.GetFailedProcessMessage("create/restore", Project, createResult));
 
             // Verify building in debug works
@@ -237,7 +237,7 @@ namespace Templates.Test
         {
             Project = await ProjectFactory.GetOrCreateProject("mvc_rs_orgauth", Output);
 
-            var createResult = await Project.RunDotNetNewAsync("mvc", auth: "SingleOrg", args: new[] { "--use-runtime-compilation" });
+            var createResult = await Project.RunDotNetNewAsync("mvc", auth: "SingleOrg", args: new[] { "--razor-runtime-compilation" });
             Assert.True(0 == createResult.ExitCode, ErrorMessages.GetFailedProcessMessage("create/restore", Project, createResult));
 
             // Verify building in debug works

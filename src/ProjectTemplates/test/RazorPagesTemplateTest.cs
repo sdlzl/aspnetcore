@@ -214,7 +214,7 @@ namespace Templates.Test
         {
             Project = await ProjectFactory.GetOrCreateProject("razorpages_rc", Output);
 
-            var createResult = await Project.RunDotNetNewAsync("razor", args: new[] { "--use-runtime-compilation" });
+            var createResult = await Project.RunDotNetNewAsync("razor", args: new[] { "--razor-runtime-compilation" });
             Assert.True(0 == createResult.ExitCode, ErrorMessages.GetFailedProcessMessage("create/restore", Project, createResult));
 
             // Verify building in debug works
@@ -233,7 +233,7 @@ namespace Templates.Test
         {
             Project = await ProjectFactory.GetOrCreateProject("razorpages_rc_org", Output);
 
-            var createResult = await Project.RunDotNetNewAsync("razor", auth: "SingleOrg", args: new[] { "--use-runtime-compilation" });
+            var createResult = await Project.RunDotNetNewAsync("razor", auth: "SingleOrg", args: new[] { "--razor-runtime-compilation" });
             Assert.True(0 == createResult.ExitCode, ErrorMessages.GetFailedProcessMessage("create/restore", Project, createResult));
 
             // Verify building in debug works
